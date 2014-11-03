@@ -1,0 +1,6 @@
+Selected items (selected in reverse order):
+4	v=5	w=1
+3	v=50	w=3
+1	v=40	w=4
+The overall value of selected items is 95 and weight 8
+Maximum weight was 10
