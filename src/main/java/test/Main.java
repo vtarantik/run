@@ -14,8 +14,8 @@ public class Main {
 			CtClass ctClass = cp.getCtClass("test.Knapsack");
 			for(CtMethod method: ctClass.getMethods()) {
 		          new CodeParser(method).parse(new OpHandler() {
-					
-					public void handle(Op op, int index) {
+
+		        	  public void handle(Op op, int index) {
 						System.out.println(op.getName() + " at index " + index);
 					}
 				});
