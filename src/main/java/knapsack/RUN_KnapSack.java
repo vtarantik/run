@@ -11,7 +11,6 @@ package knapsack;
  * @author vtarantik
  */
 public class RUN_KnapSack {
-
     /**
      * @param args the command line arguments
      */
