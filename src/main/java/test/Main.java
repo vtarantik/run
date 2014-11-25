@@ -20,7 +20,7 @@ import parser.MembersHelper;
 
 public class Main {
 	public static void main(String[] args) {
-		InstructionsLoader loader = new InstructionsLoader("RUN_Knapsack.class");
+		InstructionsLoader loader = new InstructionsLoader("RUN_KnapSack.class");
 		loader.loadInstructions();
 		
 		

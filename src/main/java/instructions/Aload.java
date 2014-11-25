@@ -7,7 +7,7 @@ public class Aload implements IAbstractInstruction{
 	}
 
 	public void execute() {
-		System.out.println("This is Aload instruction");
+		System.out.println("ALOAD");
 	}
 	
 
