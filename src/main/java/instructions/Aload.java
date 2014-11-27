@@ -1,14 +1,13 @@
 package instructions;
 
-public class Aload implements IAbstractInstruction{
+public class Aload extends AbstractInstruction{
 	
-	public Aload(){
-	//TODO implement	
+	public Aload(short opcode, int index, int length) {
+		super(opcode,index,length);
 	}
 
 	public void execute() {
-		System.out.println("ALOAD");
+		System.out.println(toString());
 	}
-	
 
 }

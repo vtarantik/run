@@ -1,9 +1,13 @@
 package instructions;
 
-public class Astore implements IAbstractInstruction{
+public class Astore extends AbstractInstruction{
+
+	public Astore(short opcode, int index, int length) {
+		super(opcode, index, length);
+	}
 
 	public void execute() {
-		System.out.println("ASTORE");
+		System.out.println(toString());
 	}
 
 }

@@ -1,9 +1,13 @@
 package instructions;
 
-public class Return implements IAbstractInstruction{
+public class Return extends AbstractInstruction{
+
+	public Return(short opcode, int index, int length) {
+		super(opcode, index, length);
+	}
 
 	public void execute() {
-		System.out.println("RETURN");
+		System.out.println(toString());
 	}
 
 }

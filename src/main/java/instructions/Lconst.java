@@ -1,9 +1,13 @@
 package instructions;
 
-public class Lconst implements IAbstractInstruction{
+public class Lconst extends AbstractInstruction{
+
+	public Lconst(short opcode, int index, int length) {
+		super(opcode, index, length);
+	}
 
 	public void execute() {
-		System.out.println("LCONST");
+		System.out.println(toString());
 	}
 
 }

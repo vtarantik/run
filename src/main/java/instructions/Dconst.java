@@ -1,9 +1,13 @@
 package instructions;
 
-public class Dconst implements IAbstractInstruction{
+public class Dconst extends AbstractInstruction{
+
+	public Dconst(short opcode, int index, int length) {
+		super(opcode, index, length);
+	}
 
 	public void execute() {
-		System.out.println("DCONST");
+		System.out.println(toString());
 	}
 
 }

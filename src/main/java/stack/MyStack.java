@@ -1,5 +1,6 @@
 package stack;
 
+import java.util.List;
 import java.util.Stack;
 
 import model.MemberType;
@@ -8,12 +9,9 @@ import org.apache.bcel.generic.Instruction;
 
 public class MyStack {
 	private static MyStack instance;
-	private static Stack<Object> variableStack;
-	private static Stack<Object> operationsStack;
-
+	
+	private Stack <StackFrame> stackFrames;
 	private MyStack() {
-		variableStack = new Stack<Object>();
-		operationsStack = new Stack<Object>();
 	}
 
 	public static MyStack getInstance() {
@@ -24,28 +22,12 @@ public class MyStack {
 		}
 	}
 
-	public void push(MemberType type, Object object) {
-		switch (type) {
-		case VARIABLE:
-			variableStack.push(object);
-			break;
-		case OPERATION:
-			operationsStack.push(object);
-			break;
-		default:
-			throw new IllegalArgumentException(
-					"Poping unsupported type from stack");
-		}
+	public void push(StackFrame stackFrame) {
+		stackFrames.push(stackFrame);
 	}
 
-	public Object pop(MemberType type) {
-		switch (type) {
-		case VARIABLE:
-			return variableStack.pop();
-		case OPERATION:
-			return operationsStack.pop();
-		}
-		throw new IllegalArgumentException("Poping unsupported type from stack");
+	public StackFrame pop(StackFrame stackFrame) {
+		return stackFrames.pop();
 	}
 
 }

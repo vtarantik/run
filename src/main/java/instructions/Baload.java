@@ -1,9 +1,13 @@
 package instructions;
 
-public class Baload implements IAbstractInstruction{
+public class Baload extends AbstractInstruction{
+
+	public Baload(short opcode, int index, int length) {
+		super(opcode, index, length);
+	}
 
 	public void execute() {
-		System.out.println("BALOAD");
+		System.out.println(toString());
 	}
 
 }

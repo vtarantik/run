@@ -1,9 +1,13 @@
 package instructions;
 
-public class PutField implements IAbstractInstruction{
+public class PutField extends AbstractInstruction{
+
+	public PutField(short opcode, int index, int length) {
+		super(opcode, index, length);
+	}
 
 	public void execute() {
-		System.out.println("PUTFIELD");
+		System.out.println(toString());
 	}
 
 }

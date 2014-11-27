@@ -1,6 +1,6 @@
 package instructions;
 
-public class Fcmp implements IAbstractInstruction{
+public class Fcmp extends AbstractInstruction{
 	private FcmpType fcmpType;
 	
 	public enum FcmpType{
@@ -8,12 +8,13 @@ public class Fcmp implements IAbstractInstruction{
 		FCMPG
 	}
 	
-	public Fcmp(FcmpType fcmpType){
+	public Fcmp(FcmpType fcmpType,short opcode,int index,int length){
+		super(opcode,index,length);
 		this.fcmpType = fcmpType;
 	}
 
 	public void execute() {
-		System.out.println("FCMP");
+		System.out.println(toString());
 	}
 
 }

@@ -1,9 +1,13 @@
 package instructions;
 
-public class Ifnull implements IAbstractInstruction{
+public class Ifnull extends AbstractInstruction{
+
+	public Ifnull(short opcode, int index, int length) {
+		super(opcode, index, length);
+	}
 
 	public void execute() {
-		System.out.println("IFNULL");
+		System.out.println(toString());
 	}
 
 }

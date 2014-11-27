@@ -1,9 +1,13 @@
 package instructions;
 
-public class Nop implements IAbstractInstruction{
+public class Nop extends AbstractInstruction{
+
+	public Nop(short opcode, int index, int length) {
+		super(opcode, index, length);
+	}
 
 	public void execute() {
-		System.out.println("NOP");
+		System.out.println(toString());
 	}
 
 }

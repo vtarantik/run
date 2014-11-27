@@ -1,9 +1,13 @@
 package instructions;
 
-public class Ldc implements IAbstractInstruction{
+public class Ldc extends AbstractInstruction{
+
+	public Ldc(short opcode, int index, int length) {
+		super(opcode, index, length);
+	}
 
 	public void execute() {
-		System.out.println("LDC");
+		System.out.println(toString());
 	}
 
 }

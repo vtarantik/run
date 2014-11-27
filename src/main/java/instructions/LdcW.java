@@ -1,9 +1,13 @@
 package instructions;
 
-public class LdcW implements IAbstractInstruction{
+public class LdcW extends AbstractInstruction{
+
+	public LdcW(short opcode, int index, int length) {
+		super(opcode, index, length);
+	}
 
 	public void execute() {
-		System.out.println("LDCW");
+		System.out.println(toString());
 	}
 
 }

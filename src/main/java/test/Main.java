@@ -1,28 +1,15 @@
 package test;
 
-import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.HashMap;
-
-import org.apache.bcel.classfile.ClassParser;
-import org.apache.bcel.classfile.ConstantPool;
-import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.classfile.Method;
-import org.apache.bcel.generic.ConstantPoolGen;
-import org.apache.bcel.generic.Instruction;
-import org.apache.bcel.generic.InstructionList;
-import org.apache.bcel.generic.MethodGen;
+import org.apache.bcel.generic.LoadInstruction;
 
-import parser.Executor;
-import parser.InstructionsLoader;
-import parser.MembersHelper;
+import parser.Parser;
 
 
 public class Main {
 	public static void main(String[] args) {
-		InstructionsLoader loader = new InstructionsLoader("RUN_KnapSack.class");
-		loader.loadInstructions();
-		
+		Parser parser = new Parser("RUN_KnapSack.class");
+		parser.run();
 		
 //		ClassParser parser;
 //		try {

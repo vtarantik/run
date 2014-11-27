@@ -1,9 +1,10 @@
 package instructions;
 
-public class If implements IAbstractInstruction {
+public class If extends AbstractInstruction {
 	private Iftype ifType;
 
-	public If(Iftype ifType) {
+	public If(Iftype ifType,short opcode,int index,int length) {
+		super(opcode,index,length);
 		this.ifType = ifType;
 	}
 
@@ -12,6 +13,6 @@ public class If implements IAbstractInstruction {
 	}
 
 	public void execute() {
-		System.out.println("IF "+ifType.name());
+		System.out.println(toString());
 	}
 }

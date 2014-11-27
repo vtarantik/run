@@ -1,9 +1,13 @@
 package instructions;
 
-public class Dload implements IAbstractInstruction{
+public class Dload extends AbstractInstruction{
+
+	public Dload(short opcode, int index, int length) {
+		super(opcode, index, length);
+	}
 
 	public void execute() {
-		System.out.println("DLOAD");
+		System.out.println(toString());
 	}
 
 }

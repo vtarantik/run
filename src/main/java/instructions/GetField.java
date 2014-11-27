@@ -1,9 +1,13 @@
 package instructions;
 
-public class GetField implements IAbstractInstruction{
+public class GetField extends AbstractInstruction{
+
+	public GetField(short opcode, int index, int length) {
+		super(opcode, index, length);
+	}
 
 	public void execute() {
-		System.out.println("GETFIELD");
+		System.out.println(toString());
 	}
 
 }
