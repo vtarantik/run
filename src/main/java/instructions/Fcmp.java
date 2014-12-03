@@ -1,5 +1,9 @@
 package instructions;
 
+import model.MyClass;
+
+import org.apache.bcel.classfile.Method;
+
 public class Fcmp extends AbstractInstruction{
 	private FcmpType fcmpType;
 	
@@ -8,8 +12,8 @@ public class Fcmp extends AbstractInstruction{
 		FCMPG
 	}
 	
-	public Fcmp(FcmpType fcmpType,short opcode,int index,int length){
-		super(opcode,index,length);
+	public Fcmp(FcmpType fcmpType,short opcode,int index,int length,MyClass ownerClass){
+		super(opcode,index,length,ownerClass);
 		this.fcmpType = fcmpType;
 	}
 

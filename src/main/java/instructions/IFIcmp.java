@@ -1,5 +1,9 @@
 package instructions;
 
+import model.MyClass;
+
+import org.apache.bcel.classfile.Method;
+
 public class IFIcmp extends AbstractInstruction{
 	private IfIcmpType ificmpType;
 	
@@ -12,8 +16,8 @@ public class IFIcmp extends AbstractInstruction{
 		ICMPNE
 	}
 	
-	public IFIcmp(IfIcmpType ificmpType,short opcode,int index,int length){
-		super(opcode,index,length);
+	public IFIcmp(IfIcmpType ificmpType,short opcode,int index,int length,MyClass ownerClass){
+		super(opcode,index,length,ownerClass);
 		this.ificmpType = ificmpType;
 	}
 

@@ -1,9 +1,13 @@
 package instructions;
 
+import model.MyClass;
+
+import org.apache.bcel.classfile.Method;
+
 public class GetField extends AbstractInstruction{
 
-	public GetField(short opcode, int index, int length) {
-		super(opcode, index, length);
+	public GetField(short opcode, int index, int length,MyClass ownerClass) {
+		super(opcode, index, length, ownerClass);
 	}
 
 	public void execute() {
