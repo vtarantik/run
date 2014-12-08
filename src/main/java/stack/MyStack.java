@@ -13,27 +13,27 @@ import org.apache.bcel.generic.Instruction;
 public class MyStack {
 	private static MyStack instance;
 	private Stack<StackFrame> frames;
-	
+
 	private MyStack() {
 		frames = new Stack<StackFrame>();
 	}
 
 	public static MyStack getInstance() {
 		if (instance == null) {
-			return new MyStack();
-		} else {
-			return instance;
+			instance = new MyStack();
 		}
+		return instance;
 	}
 
-	public StackFrame peek(){
+	public StackFrame peek() {
 		return frames.peek();
 	}
-	
-	public StackFrame pop(){
+
+	public StackFrame pop() {
 		return frames.pop();
 	}
-	public void push(StackFrame stackFrame){
+
+	public void push(StackFrame stackFrame) {
 		frames.push(stackFrame);
 	}
 

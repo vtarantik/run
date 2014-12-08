@@ -27,6 +27,7 @@ import instructions.Goto;
 import instructions.I2C;
 import instructions.IFIcmp;
 import instructions.Iadd;
+import instructions.Iaload;
 import instructions.Iastore;
 import instructions.Iconst;
 import instructions.If;
@@ -73,8 +74,11 @@ import org.apache.bcel.classfile.Attribute;
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.Constant;
 import org.apache.bcel.classfile.ConstantPool;
+import org.apache.bcel.classfile.ConstantValue;
 import org.apache.bcel.classfile.Field;
 import org.apache.bcel.classfile.JavaClass;
+import org.apache.bcel.classfile.LocalVariable;
+import org.apache.bcel.classfile.LocalVariableTable;
 import org.apache.bcel.classfile.Method;
 import org.apache.bcel.generic.ACONST_NULL;
 import org.apache.bcel.generic.ALOAD;
@@ -104,6 +108,7 @@ import org.apache.bcel.generic.GOTO;
 import org.apache.bcel.generic.I2B;
 import org.apache.bcel.generic.I2L;
 import org.apache.bcel.generic.IADD;
+import org.apache.bcel.generic.IALOAD;
 import org.apache.bcel.generic.IASTORE;
 import org.apache.bcel.generic.ICONST;
 import org.apache.bcel.generic.IFEQ;
@@ -136,6 +141,7 @@ import org.apache.bcel.generic.LDC;
 import org.apache.bcel.generic.LDC2_W;
 import org.apache.bcel.generic.LDC_W;
 import org.apache.bcel.generic.LSHL;
+import org.apache.bcel.generic.LocalVariableGen;
 import org.apache.bcel.generic.MethodGen;
 import org.apache.bcel.generic.NEW;
 import org.apache.bcel.generic.NEWARRAY;
@@ -154,9 +160,8 @@ public class MembersHelper {
 			classParser = new ClassParser(classFileName);
 			javaClass = classParser.parse();
 			
-			MyClass c = new MyClass(classFileName, javaClass.getConstantPool(), javaClass.getMethods(), javaClass.getFields(),javaClass.getAttributes(),javaClass.getAllInterfaces());
+			MyClass c = new MyClass(classFileName, javaClass.getSuperClasses(),javaClass.getConstantPool(), javaClass.getMethods(), javaClass.getFields(),javaClass.getAttributes(),javaClass.getAllInterfaces());
 			MyHeap.getInstance().addClassType(c);
-			
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -185,10 +190,10 @@ public class MembersHelper {
 		} catch (ClassNotFoundException e) {
 			// non native java class
 			System.out.println("---------------PARSING NON NATIVE JAVA CLASS----------------");
-//			int i = loadedClassName.lastIndexOf('.'); 
-//			String buffer = loadedClassName.substring(i+1); 
-//			Parser p = new Parser(buffer+".class");
-//			p.init();
+			int i = loadedClassName.lastIndexOf('.'); 
+			String buffer = loadedClassName.substring(i+1); 
+			Parser p = new Parser(buffer+".class");
+			p.run(true);
 		}
 		return classToStore;
 	}
@@ -203,7 +208,7 @@ public class MembersHelper {
 	}
 	
 	public static HashMap<Method,ArrayDeque<AbstractInstruction>> getMethodsInstructions(MyClass ownerClass){
-		Method[] methods = javaClass.getMethods();
+		Method[] methods = ownerClass.getMethods();
 		 HashMap<Method,ArrayDeque<AbstractInstruction>> mapToReturn = new HashMap<Method, ArrayDeque<AbstractInstruction>>();
 		for (Method method : methods) {
 			ArrayDeque<AbstractInstruction> collectionToSaveTo = new ArrayDeque<AbstractInstruction>();
@@ -215,25 +220,21 @@ public class MembersHelper {
 		}
 		return mapToReturn;
 	}
+	
+	public static HashMap<Method,Attribute[]> getMethodsAttributes(MyClass ownerClass){
+		Method[] methods = ownerClass.getMethods();
+		 HashMap<Method,Attribute[]> mapToReturn = new HashMap<Method, Attribute[]>();
+		for (Method method : methods) {
+			mapToReturn.put(method, method.getCode().getAttributes());
+		}
+		return mapToReturn;
+	}
 
-//	public static Object createObjectFromClassName(String className) {
-//		Class c = loadClass(className);
-//		if (c != null) {
-//			Constructor<?> cons = null;
-//			Object object = null;
-//			try {
-//				cons = c.getConstructor();
-//				object = cons.newInstance();
-//
-//			} catch (NoSuchMethodException | SecurityException
-//					| InstantiationException | IllegalAccessException
-//					| IllegalArgumentException | InvocationTargetException e) {
-//				return null;
-//			}
-//			return object;
-//		}
-//		return null;
-//	}
+	public static Object createObjectFromClassName(String className) {
+		MyClass c = loadClass(className);
+		
+		return c;
+	}
 	
 	private static void saveInstruction(MyClass ownerClass,ArrayDeque<AbstractInstruction> collectionToSaveTo, Instruction i) {
 		AbstractInstruction instructionToStore;
@@ -290,7 +291,7 @@ public class MembersHelper {
 			instructionToStore = new Bastore(bas.getOpcode(),-1,bas.getLength(),ownerClass);
 		} else if (i instanceof BIPUSH) {
 			BIPUSH bp = (BIPUSH)i;
-			instructionToStore = new Bipush(bp.getOpcode(),-1,bp.getLength(),ownerClass);
+			instructionToStore = new Bipush(bp.getValue(),bp.getOpcode(),-1,bp.getLength(),ownerClass);
 		} else if (i instanceof CALOAD) {
 			CALOAD cl = (CALOAD)i;
 			instructionToStore = new Caload(cl.getOpcode(),-1,cl.getLength(),ownerClass);
@@ -305,7 +306,7 @@ public class MembersHelper {
 			instructionToStore = new Dcmp(DcmpType.DCMPL,d.getOpcode(),-1,d.getLength(),ownerClass);
 		} else if (i instanceof DCONST) {
 			DCONST d = (DCONST)i;
-			instructionToStore = new Dconst(d.getOpcode(),-1,d.getLength(),ownerClass);
+			instructionToStore = new Dconst(d.getValue(),d.getOpcode(),-1,d.getLength(),ownerClass);
 		} else if (i instanceof DLOAD) {
 			DLOAD d = (DLOAD)i;
 			instructionToStore = new Dload(d.getOpcode(),d.getIndex(),d.getLength(),ownerClass);
@@ -320,7 +321,7 @@ public class MembersHelper {
 			instructionToStore = new Fcmp(FcmpType.FCMPL,f.getOpcode(),-1,f.getLength(),ownerClass);
 		} else if (i instanceof FCONST) {
 			FCONST f = (FCONST)i;
-			instructionToStore = new Fconst(f.getOpcode(),-1,f.getLength(),ownerClass);
+			instructionToStore = new Fconst(f.getValue(),f.getOpcode(),-1,f.getLength(),ownerClass);
 		} else if (i instanceof FLOAD) {
 			FLOAD f = (FLOAD)i;
 			instructionToStore = new Fload(f.getOpcode(),f.getIndex(),f.getLength(),ownerClass);
@@ -351,12 +352,15 @@ public class MembersHelper {
 		} else if (i instanceof ILOAD) {
 			ILOAD il = (ILOAD)i;
 			instructionToStore = new Iload(il.getOpcode(),il.getIndex(),il.getLength(),ownerClass);
-		} else if (i instanceof IASTORE) {
+		} else if(i instanceof IALOAD){
+			IALOAD ial = (IALOAD) i;
+			instructionToStore = new Iaload(ial.getOpcode(), -1, ial.getLength(), ownerClass);
+		}else if (i instanceof IASTORE) {
 			IASTORE is = (IASTORE)i;
 			instructionToStore = new Iastore(is.getOpcode(),-1,is.getLength(),ownerClass);
 		} else if (i instanceof ICONST) {
 			ICONST ic= (ICONST)i;
-			instructionToStore = new Iconst(ic.getOpcode(),-1,ic.getLength(),ownerClass);
+			instructionToStore = new Iconst(ic.getValue(),ic.getOpcode(),-1,ic.getLength(),ownerClass);
 		} else if (i instanceof IF_ICMPEQ) {
 			IF_ICMPEQ ic = (IF_ICMPEQ)	i;
 			instructionToStore = new IFIcmp(IfIcmpType.ICMPEQ,ic.getOpcode(),ic.getIndex(),ic.getLength(),ownerClass);

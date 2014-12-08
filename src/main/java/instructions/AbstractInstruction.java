@@ -19,8 +19,17 @@ public abstract class AbstractInstruction {
 	
 	@Override
 	public String toString() {
-		return getClass().getSimpleName().toUpperCase()+ " OC: "+ opcode+" idx: "+index+" length: "+length;
+		return getClass().getSimpleName().toUpperCase()+ " OC: "+ opcode+" idx: "+index+" length: "+length+ " OWNER CLASS: "+ownerClass.getClassName();
 	}
 	
-	public abstract void execute();
+	public abstract void execute(Method m);
+	
+	
+	public boolean isControl(){
+		return false;
+	}
+
+	public int nextInstructionPositionOffset(){
+		return 0;
+	}
 }

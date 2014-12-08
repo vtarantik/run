@@ -4,14 +4,24 @@ import model.MyClass;
 
 import org.apache.bcel.classfile.Method;
 
-public class Bipush extends AbstractInstruction{
+import stack.MyStack;
+import stack.StackFrame;
 
-	public Bipush(short opcode, int index, int length,MyClass ownerClass) {
+/*
+ * The immediate byte is sign-extended to an int value. That value is pushed onto the operand stack.
+ */
+public class Bipush extends AbstractInstruction{
+	private Number value;
+
+	public Bipush(Number value,short opcode, int index, int length,MyClass ownerClass) {
 		super(opcode, index, length,ownerClass);
+		this.value = value;
 	}
 
-	public void execute() {
-		System.out.println(toString());
+	public void execute(Method m) {
+		int result = value.intValue();
+		StackFrame currentStackFrame = MyStack.getInstance().peek();
+		currentStackFrame.pushOperand(result);
 	}
 	
 }

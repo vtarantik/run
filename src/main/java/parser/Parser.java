@@ -134,6 +134,8 @@ import stack.MyStack;
 import stack.StackFrame;
 
 public class Parser {
+	private static final String MAIN_METHOD_NAME = "main";
+	private static final String INIT_METHOD_NAME = "<init>";
 	private HashMap<Method, ArrayDeque<Instruction>> methodsInstructions;
 	private HashMap<Method, ArrayDeque<AbstractInstruction>> methodsLoadedInstructions;
 	private String className;
@@ -148,10 +150,12 @@ public class Parser {
 		}
 	}
 	
-	public void run(){
+	public void run(boolean init){
 		MyClass c = MyHeap.getInstance().getClassType(className);
-		c.runInit();
-		c.runMain();
+		if(init){
+			c.runMethod(INIT_METHOD_NAME);
+		}
+		c.runMethod(MAIN_METHOD_NAME);
 	}
 	
 }

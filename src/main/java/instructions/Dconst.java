@@ -4,14 +4,26 @@ import model.MyClass;
 
 import org.apache.bcel.classfile.Method;
 
-public class Dconst extends AbstractInstruction{
+import stack.MyStack;
+import stack.StackFrame;
 
-	public Dconst(short opcode, int index, int length,MyClass ownerClass) {
+/*
+ * Push the double constant <d> (0.0 or 1.0) onto the operand stack.
+ */
+public class Dconst extends AbstractInstruction{
+	private Number value;
+
+	public Dconst(Number value,short opcode, int index, int length,MyClass ownerClass) {
 		super(opcode, index, length,ownerClass);
+		this.value = value;
 	}
 
-	public void execute() {
+	public void execute(Method m) {
 		System.out.println(toString());
+		StackFrame currentStackFrame = MyStack.getInstance().peek();
+		double d = value.doubleValue();
+		currentStackFrame.pushOperand(d);
+		
 	}
 
 }
